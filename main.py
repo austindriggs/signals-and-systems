@@ -155,7 +155,7 @@ plt.figure()
 plt.plot(f[:len(f)//2], np.abs(FTdata[:len(f)//2]))  # only positive frequencies
 plt.xlabel("Frequency (Hz)")
 plt.ylabel("Magnitude")
-plt.xlim(5, 15)  # zoom in on specific range
+plt.xlim(15, 25)  # zoom in on specific range
 plt.axhline(y=10000, color='grey', linestyle='--', alpha=0.5)
 plt.title("Fourier Transform Magnitude Spectrum")
 
