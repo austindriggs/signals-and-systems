@@ -11,6 +11,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.fftpack import fft
+import math
 
 
 
@@ -28,6 +29,7 @@ t_0 = -b
 T_0 = 2 * b
 step = 0.01
 t = np.arange((-T_0 / 2), (T_0 / 2), step)
+f_0 = 1 / T_0
 
 
 
@@ -41,7 +43,7 @@ k_range_nonzero = k_range[k_range != 0]  # Exclude k = 0 to avoid division by ze
 # Fourier coefficients (compute b_k for nonzero k)
 # Alternate signs using simple conditional logic
 signs = np.where(k_range_nonzero % 2 == 0, 1, -1)  # Assign +1 for even k, -1 for odd k
-b_k = -2 * a / (np.pi * k_range_nonzero) * signs  # sine coefficients (b_k)
+b_k = -1 * a / (np.pi * k_range_nonzero) * signs  # sine coefficients (b_k)
 c_k = np.zeros_like(k_range_nonzero)  # cosine coefficients (c_k), zero for sawtooth
 
 # Magnitude Spectrum: |ak| = sqrt(c_k^2 + b_k^2)
@@ -50,28 +52,95 @@ ak_magnitude = np.sqrt(c_k**2 + b_k**2)
 # Phase Spectrum: phase(ka) = atan2(b_k, c_k)
 ak_phase = np.angle(b_k + 1j*c_k)  # Using complex number for easy phase computation
 
+# Flip the phase for negative k values to point downwards
+ak_phase[k_range_nonzero < 0] *= -1
+
 # Plotting
 plt.figure(figsize=(12, 6))
 
-# Magnitude Spectrum
+# Magnitude Spectrum with height labels
 plt.subplot(1, 2, 1)
-plt.stem(k_range_nonzero, ak_magnitude, basefmt=" ", linefmt='b-', markerfmt='bo')  # solid blue line and blue markers
-plt.axvline(x=0, color='b', linestyle='-', ymax=5/2.5)  # Solid blue line at x=0
-plt.ylim(0, 3)  # Set y-limits for the magnitude spectrum
-plt.xlabel('k (Discrete Frequencies)')
+markerline, stemlines, baseline = plt.stem(k_range_nonzero, ak_magnitude, basefmt=" ", linefmt='b-', markerfmt='bo')  # Use k_range_nonzero for x-axis
+plt.setp(stemlines, 'linewidth', 1)
+
+for i, mag in enumerate(ak_magnitude):
+    plt.text(k_range_nonzero[i], mag + 0.1, f'{mag:.2f}', ha='center', va='bottom', fontsize=8)
+
+plt.axvline(x=0, color='b', linestyle='-', ymax=5/2.5)
+plt.ylim(0, 3)
+plt.xlabel('f_0 k')  # Change x-axis label back to k
 plt.ylabel('Magnitude |a_k|')
 plt.title('Magnitude Spectrum')
 plt.grid()
 
-# Phase Spectrum
+# Phase Spectrum with height labels
 plt.subplot(1, 2, 2)
-plt.stem(k_range_nonzero, ak_phase, basefmt=" ", linefmt='b-', markerfmt='bo')  # solid blue line and blue markers
-plt.xlabel('k (Discrete Frequencies)')
+markerline, stemlines, baseline = plt.stem(k_range_nonzero, ak_phase, basefmt=" ", linefmt='b-', markerfmt='bo')  # Use k_range_nonzero for x-axis
+plt.setp(stemlines, 'linewidth', 1)
+
+for i, phase in enumerate(ak_phase):
+    plt.text(k_range_nonzero[i], phase + 0.1, f'{phase:.2f}', ha='center', va='bottom', fontsize=8)
+
+plt.xlabel('f_0 k')  # Change x-axis label back to k
 plt.ylabel('Phase a_k (radians)')
 plt.title('Phase Spectrum')
 plt.grid()
 
 plt.tight_layout()
+
+
+#################################################
+# PART 2
+#################################################
+
+# calculations
+import math
+import matplotlib.pyplot as plt
+
+#################################################
+# PART 2
+#################################################
+
+# calculations
+mag_of_ak = []
+phase_of_ak = []
+for i in range(-10, 10):
+    # magnitude
+    if i == 0:
+        mag_of_ak.append(1000)  # its infinity but this is tall enough for the plot
+    else:
+        mag_of_ak.append(4 / (math.pi * abs(i)))
+
+    # phase
+    if i == 0:
+        phase_of_ak.append(0.0)
+    elif i > 0:
+        phase_of_ak.append(math.pi)
+    else:
+        phase_of_ak.append(-math.pi) 
+
+# magnitude plot
+plt.subplot(2, 1, 1)
+plt.stem(range(-10, 10), mag_of_ak, markerfmt="bo") 
+plt.xlabel("f_0 k")
+plt.ylabel("|a_k|")
+plt.ylim(0, 3)
+plt.title("Magnitude of Fourier Series Coefficients")
+plt.grid(True)
+
+# phase plot
+plt.subplot(2, 1, 2)
+plt.stem(range(-10, 10), phase_of_ak, markerfmt="bo")
+plt.xlabel("f_0 k")
+plt.ylabel("Phase of a_k (radians)")
+plt.ylim(-4, 4) 
+plt.title("Phase of Fourier Series Coefficients")
+plt.grid(True)
+
+# plot
+plt.tight_layout()
+plt.show()
+
 
 
 
