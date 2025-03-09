@@ -44,30 +44,30 @@ signs = np.where(k_range_nonzero % 2 == 0, 1, -1)  # Assign +1 for even k, -1 fo
 b_k = -2 * a / (np.pi * k_range_nonzero) * signs  # sine coefficients (b_k)
 c_k = np.zeros_like(k_range_nonzero)  # cosine coefficients (c_k), zero for sawtooth
 
-# Magnitude Spectrum: |ka| = sqrt(c_k^2 + b_k^2)
-ka_magnitude = np.sqrt(c_k**2 + b_k**2)
+# Magnitude Spectrum: |ak| = sqrt(c_k^2 + b_k^2)
+ak_magnitude = np.sqrt(c_k**2 + b_k**2)
 
 # Phase Spectrum: phase(ka) = atan2(b_k, c_k)
-ka_phase = np.angle(b_k + 1j*c_k)  # Using complex number for easy phase computation
+ak_phase = np.angle(b_k + 1j*c_k)  # Using complex number for easy phase computation
 
 # Plotting
 plt.figure(figsize=(12, 6))
 
 # Magnitude Spectrum
 plt.subplot(1, 2, 1)
-plt.stem(k_range_nonzero, ka_magnitude, basefmt=" ", linefmt='b-', markerfmt='bo')  # solid blue line and blue markers
+plt.stem(k_range_nonzero, ak_magnitude, basefmt=" ", linefmt='b-', markerfmt='bo')  # solid blue line and blue markers
 plt.axvline(x=0, color='b', linestyle='-', ymax=5/2.5)  # Solid blue line at x=0
 plt.ylim(0, 3)  # Set y-limits for the magnitude spectrum
 plt.xlabel('k (Discrete Frequencies)')
-plt.ylabel('Magnitude |ka|')
+plt.ylabel('Magnitude |a_k|')
 plt.title('Magnitude Spectrum')
 plt.grid()
 
 # Phase Spectrum
 plt.subplot(1, 2, 2)
-plt.stem(k_range_nonzero, ka_phase, basefmt=" ", linefmt='b-', markerfmt='bo')  # solid blue line and blue markers
+plt.stem(k_range_nonzero, ak_phase, basefmt=" ", linefmt='b-', markerfmt='bo')  # solid blue line and blue markers
 plt.xlabel('k (Discrete Frequencies)')
-plt.ylabel('Phase (ka) [radians]')
+plt.ylabel('Phase a_k (radians)')
 plt.title('Phase Spectrum')
 plt.grid()
 
@@ -151,6 +151,14 @@ plt.ylabel("Intensity")
 plt.title("Time-Domain Signal")
 
 # plot frequency spectrum
+plt.figure()
+plt.plot(f[:len(f)//2], np.abs(FTdata[:len(f)//2]))  # only positive frequencies
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Magnitude")
+plt.xlim(0, 4000)  # zoom in on specific range
+plt.title("Fourier Transform Magnitude Spectrum")
+
+# plot narrowed freq spectrum
 plt.figure()
 plt.plot(f[:len(f)//2], np.abs(FTdata[:len(f)//2]))  # only positive frequencies
 plt.xlabel("Frequency (Hz)")
