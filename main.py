@@ -41,9 +41,10 @@ plt.grid()
 # fourier series approximation function
 def fourier_series_inverse_sawtooth(t, N, T_0, a):
     x_approx = np.zeros_like(t)
-    for n in range(1, N + 1):
-        bn = -2 * a / (np.pi * n) * (-1)**n  # fourier coefficient
-        x_approx += bn * np.sin(2 * np.pi * n * t / T_0)  # summation
+    b_0 = 0  # DC component, for sawtooth this is zero
+    for k in range(1, N + 1):
+        b_k = -2 * a / (np.pi * k) * (-1)**k  # note that c_k = 0 for sawtooth
+        x_approx += b_k * np.sin(2 * np.pi * k * t / T_0) 
     return x_approx
 
 # fourier approximations and residual signals
