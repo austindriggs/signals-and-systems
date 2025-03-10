@@ -36,7 +36,7 @@ f_0 = 1 / T_0
 #################################################
 # PART 2
 #################################################
-
+'''
 k_range = np.arange(-10, 11)  # k from -10 to 10
 k_range_nonzero = k_range[k_range != 0]  # Exclude k = 0 to avoid division by zero
 
@@ -87,15 +87,8 @@ plt.title('Phase Spectrum')
 plt.grid()
 
 plt.tight_layout()
+'''
 
-
-#################################################
-# PART 2
-#################################################
-
-# calculations
-import math
-import matplotlib.pyplot as plt
 
 #################################################
 # PART 2
