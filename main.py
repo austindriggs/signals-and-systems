@@ -230,7 +230,7 @@ plt.figure()
 plt.plot(f[:len(f)//2], np.abs(FTdata[:len(f)//2]))  # only positive frequencies
 plt.xlabel("Frequency (Hz)")
 plt.ylabel("Magnitude")
-plt.xlim(0, 4000)  # zoom in on specific range
+plt.xlim(0, 4000)  # capture the whole range
 plt.title("Fourier Transform Magnitude Spectrum")
 
 # plot narrowed freq spectrum
