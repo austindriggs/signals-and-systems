@@ -97,7 +97,9 @@ plt.tight_layout()
 # calculations
 mag_of_ak = []
 phase_of_ak = []
-for i in range(-10, 10):
+k_values = list(range(-10, 10))  # x-axis values
+
+for i in k_values:
     # magnitude
     if i == 0:
         mag_of_ak.append(1000)  # its infinity but this is tall enough for the plot
@@ -112,26 +114,37 @@ for i in range(-10, 10):
     else:
         phase_of_ak.append(-math.pi) 
 
+# create figure
+plt.figure(figsize=(12, 5))  # adjust figure size to make plots more readable
+
 # magnitude plot
-plt.subplot(2, 1, 1)
-plt.stem(range(-10, 10), mag_of_ak, markerfmt="bo") 
+plt.subplot(1, 2, 1)  # 1 row, 2 columns, first plot
+markerline, stemline, baseline = plt.stem(k_values, mag_of_ak, markerfmt="bo") 
+baseline.set_visible(False)
 plt.xlabel("f_0 k")
 plt.ylabel("|a_k|")
 plt.ylim(0, 3)
 plt.title("Magnitude of Fourier Series Coefficients")
 plt.grid(True)
 
+for x, y in zip(k_values, mag_of_ak):
+    plt.text(x, y + 0.1, f"{y:.2f}", ha="center", fontsize=6)
+
 # phase plot
-plt.subplot(2, 1, 2)
-plt.stem(range(-10, 10), phase_of_ak, markerfmt="bo")
+plt.subplot(1, 2, 2)  # 1 row, 2 columns, second plot
+markerline, stemline, baseline = plt.stem(k_values, phase_of_ak, markerfmt="bo")
+baseline.set_visible(False)
 plt.xlabel("f_0 k")
 plt.ylabel("Phase of a_k (radians)")
 plt.ylim(-4, 4) 
 plt.title("Phase of Fourier Series Coefficients")
 plt.grid(True)
 
+for x, y in zip(k_values, phase_of_ak):
+    plt.text(x, y + 0.2, f"{y:.2f}", ha="center", fontsize=6)
+
 # plot
-plt.tight_layout()
+plt.tight_layout()  # adjusts spacing to prevent overlap
 plt.show()
 
 
